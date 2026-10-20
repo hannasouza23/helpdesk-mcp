@@ -13,3 +13,5 @@ Nesta etapa, o servidor expõe apenas operações sobre dados, não uma interfac
 Consulte a [missão do projeto](specs/missao.md) para conhecer o propósito, os utilizadores, o escopo inicial e os limites do exemplo.
 
 A [especificação da pilha de tecnologia](specs/pilha-tecnologia.md) registra as decisões de implementação, o esquema SQLite, a inicialização com dados fictícios e a execução local via `stdio`. As dependências Python estão listadas em `requirements.txt`.
+
+O [roadmap de funcionalidades](specs/roadmap.md) organiza as três tools previstas em fases de definição, implementação e validação. Os nomes de variáveis, tabelas, atributos e funções do código serão em português.
