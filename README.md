@@ -11,3 +11,5 @@ Os chamados são registrados pela equipe de suporte técnico em um banco de dado
 Nesta etapa, o servidor expõe apenas operações sobre dados, não uma interface para atendentes. O exemplo utilizará dados fictícios, será executado localmente e não terá autenticação real; não deve ser usado com dados reais nem considerado pronto para produção.
 
 Consulte a [missão do projeto](specs/missao.md) para conhecer o propósito, os utilizadores, o escopo inicial e os limites do exemplo.
+
+A [especificação da pilha de tecnologia](specs/pilha-tecnologia.md) registra as decisões de implementação, o esquema SQLite, a inicialização com dados fictícios e a execução local via `stdio`. As dependências Python estão listadas em `requirements.txt`.

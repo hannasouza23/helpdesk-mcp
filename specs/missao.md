@@ -6,7 +6,7 @@ Disponibilizar operações de helpdesk por meio de um servidor MCP para que agen
 
 ## Problema que resolve
 
-Os chamados de suporte são registrados em um banco de dados e precisam ser consultados e atualizados pela equipe de suporte. O servidor MCP oferece uma interface padronizada para que clientes MCP autorizados no ambiente local realizem essas operações sobre os dados.
+Os chamados de suporte são registrados em um banco de dados e precisam ser consultados e atualizados pela equipe de suporte. O servidor MCP oferece uma interface padronizada para que agentes e aplicações clientes MCP no ambiente local realizem essas operações sobre os dados.
 
 ## Utilizadores
 
