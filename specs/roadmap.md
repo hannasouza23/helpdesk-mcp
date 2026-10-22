@@ -29,18 +29,18 @@ Tool MCP: `buscar_historico_cliente`, consultando os chamados de um cliente.
 
 ### Fase 1 — Definir o contrato
 
-- **Objetivo:** definir como identificar o cliente e quais informações dos chamados compõem seu histórico.
-- **Critério de conclusão:** entradas, resultados e comportamento para cliente sem chamados ou não encontrado estão descritos e aprovados para implementação.
+- **Objetivo:** definir como identificar o cliente por `cliente_id` numérico e quais informações dos chamados compõem seu histórico.
+- **Critério de conclusão:** entrada, resultados e comportamento distinto para cliente cadastrado sem chamados e identificador sem cliente correspondente estão descritos e aprovados para implementação.
 
 ### Fase 2 — Implementar a consulta
 
-- **Objetivo:** disponibilizar a tool para consultar os chamados associados ao cliente informado.
-- **Critério de conclusão:** a tool retorna somente os chamados do cliente solicitado, incluindo as informações de histórico previstas no contrato.
+- **Objetivo:** disponibilizar a tool para consultar os chamados associados ao cliente identificado por `cliente_id`.
+- **Critério de conclusão:** a tool retorna somente os chamados do cliente solicitado e seus eventos de status em ordem cronológica, retorna lista vazia para cliente cadastrado sem chamados e sinaliza erro apropriado quando o cliente não existe.
 
 ### Fase 3 — Validar a funcionalidade
 
 - **Objetivo:** verificar a consulta de histórico por meio do servidor MCP.
-- **Critério de conclusão:** testes confirmam o histórico para clientes com e sem chamados e o comportamento para cliente não encontrado, sem regressões nas operações existentes.
+- **Critério de conclusão:** testes confirmam o histórico para clientes com e sem chamados, distinguem cliente inexistente de lista vazia e não identificam regressões nas operações existentes.
 
 ## 3. Atualizar status
 

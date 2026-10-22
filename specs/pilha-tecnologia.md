@@ -76,7 +76,7 @@ Se já houver chamados, a inicialização não deve inserir novamente os dados d
 As ferramentas iniciais devem corresponder ao escopo da missão:
 
 - `listar_chamados`: listar chamados, com filtro opcional por status.
-- `buscar_historico_cliente`: listar os chamados de um cliente e seus eventos de status em ordem cronológica.
+- `buscar_historico_cliente`: receber o identificador numérico `cliente_id` e listar os chamados desse cliente com seus eventos de status em ordem cronológica. Para cliente cadastrado sem chamados, retornar uma lista vazia; para identificador sem cliente correspondente, sinalizar erro de cliente não encontrado.
 - `atualizar_status`: atualizar o status de um chamado e registrar a transição no histórico.
 
 Atualizar o chamado e inserir o evento correspondente no histórico deve ocorrer na mesma transação. Se o status solicitado for igual ao atual, não deve ser criado um evento de transição duplicado. Consultas e atualizações devem usar parâmetros SQL, sem interpolar valores recebidos nas instruções SQL.
