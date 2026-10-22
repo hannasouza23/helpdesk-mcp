@@ -24,7 +24,7 @@ Com Python 3.11 ou superior, prepare o ambiente e inicie o servidor MCP:
 python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install -r requirements.txt
-python -m helpdesk_mcp.server
+python src/server.py
 ```
 
 Na primeira execução, o servidor cria `data/helpdesk.sqlite3`, o esquema SQLite e
@@ -32,4 +32,6 @@ chamados fictícios. Para usar outro arquivo de banco, defina `HELPDESK_DB_PATH`
 O transporte do servidor é `stdio`; a tool `listar_chamados` aceita o parâmetro
 opcional `status` (`aberto`, `em_andamento`, `resolvido` ou `fechado`).
 
-Execute os testes com `python -m unittest discover -s tests`.
+Execute os testes com `python -m unittest discover -s tests`. O código da
+aplicação fica em `src/`; o teste de integração também valida o ponto de entrada
+configurado em `.vscode/mcp.json` via transporte `stdio`.

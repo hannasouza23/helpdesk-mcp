@@ -8,9 +8,10 @@ import unittest
 from unittest.mock import MagicMock, patch
 
 from fastmcp import Client
+from fastmcp.client.client import CallToolResult
 from fastmcp.client.transports import StdioTransport
 
-from helpdesk_mcp import database
+from src import database
 
 
 class TestarListagemChamados(unittest.TestCase):
@@ -127,12 +128,16 @@ class TestarListagemChamados(unittest.TestCase):
         self.assertEqual(parametros, ("aberto",))
 
     def test_tool_mcp_expoe_e_filtra_a_listagem(self) -> None:
-        async def chamar_tool() -> tuple[list[str], object]:
+        async def chamar_tool() -> tuple[list[str], CallToolResult]:
             ambiente = os.environ.copy()
             ambiente["HELPDESK_DB_PATH"] = str(self.caminho_banco)
+            caminho_src = str(Path(__file__).resolve().parents[1] / "src")
+            ambiente["PYTHONPATH"] = os.pathsep.join(
+                filter(None, (caminho_src, ambiente.get("PYTHONPATH")))
+            )
             transporte = StdioTransport(
                 command=sys.executable,
-                args=["-m", "helpdesk_mcp.server"],
+                args=[str(Path(caminho_src) / "server.py")],
                 env=ambiente,
                 cwd=str(Path(__file__).resolve().parents[1]),
             )
@@ -147,8 +152,11 @@ class TestarListagemChamados(unittest.TestCase):
 
         self.assertEqual(nomes_ferramentas, ["listar_chamados"])
         self.assertFalse(resultado.is_error)
+        conteudo_estruturado = resultado.structured_content
+        self.assertIsNotNone(conteudo_estruturado)
+        assert conteudo_estruturado is not None
         self.assertEqual(
-            resultado.structured_content["result"][0]["status"], "aberto"
+            conteudo_estruturado["result"][0]["status"], "aberto"
         )
 
 

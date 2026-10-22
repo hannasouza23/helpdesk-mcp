@@ -3,7 +3,7 @@ from pathlib import Path
 
 from fastmcp import FastMCP
 
-from helpdesk_mcp.database import (
+from database import (
     CAMINHO_BANCO_PADRAO,
     Chamado,
     inicializar_banco,

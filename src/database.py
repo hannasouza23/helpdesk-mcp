@@ -6,7 +6,9 @@ from typing import TypedDict
 
 
 STATUS_VALIDOS = ("aberto", "em_andamento", "resolvido", "fechado")
-CAMINHO_BANCO_PADRAO = Path(__file__).resolve().parent.parent / "data" / "helpdesk.sqlite3"
+CAMINHO_BANCO_PADRAO = (
+    Path(__file__).resolve().parents[1] / "data" / "helpdesk.sqlite3"
+)
 
 
 class Chamado(TypedDict):
@@ -189,4 +191,14 @@ def listar_chamados(
 
     if not linhas:
         return "Nenhum chamado encontrado."
-    return [dict(linha) for linha in linhas]
+    return [
+        Chamado(
+            id=linha["id"],
+            cliente_id=linha["cliente_id"],
+            descricao=linha["descricao"],
+            status=linha["status"],
+            criado_em=linha["criado_em"],
+            atualizado_em=linha["atualizado_em"],
+        )
+        for linha in linhas
+    ]

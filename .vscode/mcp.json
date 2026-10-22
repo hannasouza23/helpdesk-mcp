@@ -1,0 +1,11 @@
+{
+  "servers": {
+    "helpdesk-mcp": {
+      "type": "stdio",
+      "command": "/home/hanna/Downloads/sdd-mcp/helpdesk-mcp/.venv/bin/python",
+      "args": [
+          "/home/hanna/Downloads/sdd-mcp/helpdesk-mcp/src/server.py"
+      ]
+    }
+  }
+}
