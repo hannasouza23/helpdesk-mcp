@@ -6,6 +6,8 @@ As funcionalidades serão desenvolvidas nesta ordem, uma por vez. Cada fase defi
 
 Tool MCP: `listar_chamados`, com filtro opcional por status.
 
+**Status:** concluída em 22/10/2026 às 11:29 (UTC−03:00).
+
 ### Fase 1 — Definir o contrato
 
 - **Objetivo:** definir o comportamento esperado da listagem e do filtro opcional.
