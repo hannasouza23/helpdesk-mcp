@@ -48,6 +48,8 @@ Tool MCP: `buscar_historico_cliente`, consultando os chamados de um cliente.
 
 Tool MCP: `atualizar_status`, alterando o status de um chamado existente.
 
+**Status:** concluída em 22/10/2026 às 14:13 (UTC−03:00).
+
 ### Fase 1 — Definir o contrato
 
 - **Objetivo:** definir os status aceitos e o comportamento para chamado inexistente ou atualização inválida.
