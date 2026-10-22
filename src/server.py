@@ -2,10 +2,13 @@ import os
 from pathlib import Path
 
 from fastmcp import FastMCP
+from pydantic import StrictInt
 
 from database import (
     CAMINHO_BANCO_PADRAO,
     Chamado,
+    ChamadoComHistorico,
+    buscar_historico_cliente as consultar_historico_cliente,
     inicializar_banco,
     listar_chamados as consultar_chamados,
 )
@@ -24,6 +27,17 @@ def criar_servidor(caminho_banco: str | Path = CAMINHO_BANCO_PADRAO) -> FastMCP:
     def listar_chamados(status: str | None = None) -> list[Chamado] | str:
         """Lista os chamados com os dados persistidos no SQLite."""
         return consultar_chamados(caminho_banco, status)
+
+    @servidor.tool(
+        name="buscar_historico_cliente",
+        description=(
+            "Busca os chamados e eventos de status persistidos de um cliente "
+            "pelo seu identificador numérico."
+        ),
+    )
+    def buscar_historico_cliente(cliente_id: StrictInt) -> list[ChamadoComHistorico]:
+        """Retorna o histórico de chamados do cliente informado."""
+        return consultar_historico_cliente(caminho_banco, cliente_id)
 
     return servidor
 

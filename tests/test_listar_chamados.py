@@ -78,6 +78,7 @@ class TestarListagemChamados(unittest.TestCase):
     def test_lista_todos_ordenados_com_desempate_por_id(self) -> None:
         resultado = database.listar_chamados(self.caminho_banco)
 
+        assert isinstance(resultado, list)
         self.assertEqual([chamado["id"] for chamado in resultado], [14, 13, 11, 12, 10])
         self.assertEqual(
             set(resultado[0]),
@@ -88,7 +89,7 @@ class TestarListagemChamados(unittest.TestCase):
         for status in database.STATUS_VALIDOS:
             with self.subTest(status=status):
                 resultado = database.listar_chamados(self.caminho_banco, status)
-                self.assertTrue(isinstance(resultado, list))
+                assert isinstance(resultado, list)
                 self.assertTrue(all(chamado["status"] == status for chamado in resultado))
 
     def test_status_valido_sem_resultados_retorna_mensagem(self) -> None:
@@ -150,7 +151,9 @@ class TestarListagemChamados(unittest.TestCase):
 
         nomes_ferramentas, resultado = asyncio.run(chamar_tool())
 
-        self.assertEqual(nomes_ferramentas, ["listar_chamados"])
+        self.assertEqual(
+            nomes_ferramentas, ["listar_chamados", "buscar_historico_cliente"]
+        )
         self.assertFalse(resultado.is_error)
         conteudo_estruturado = resultado.structured_content
         self.assertIsNotNone(conteudo_estruturado)
@@ -245,6 +248,7 @@ class TestarInicializacaoBanco(unittest.TestCase):
         database.inicializar_banco(self.caminho_banco)
 
         resultado = database.listar_chamados(self.caminho_banco)
+        assert isinstance(resultado, list)
         self.assertEqual(len(resultado), 1)
         self.assertEqual(resultado[0]["descricao"], "Não substituir")
         with database.conectar_banco(self.caminho_banco) as conexao:

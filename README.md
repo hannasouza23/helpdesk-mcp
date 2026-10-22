@@ -29,8 +29,10 @@ python src/server.py
 
 Na primeira execução, o servidor cria `data/helpdesk.sqlite3`, o esquema SQLite e
 chamados fictícios. Para usar outro arquivo de banco, defina `HELPDESK_DB_PATH`.
-O transporte do servidor é `stdio`; a tool `listar_chamados` aceita o parâmetro
-opcional `status` (`aberto`, `em_andamento`, `resolvido` ou `fechado`).
+O transporte do servidor é `stdio`. A tool `listar_chamados` aceita o parâmetro
+opcional `status` (`aberto`, `em_andamento`, `resolvido` ou `fechado`), e
+`buscar_historico_cliente` recebe o `cliente_id` numérico para retornar os
+chamados do cliente e seus eventos de status persistidos.
 
 ## Configurar o servidor MCP no VS Code
 

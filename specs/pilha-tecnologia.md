@@ -4,7 +4,7 @@
 
 - **Linguagem:** Python 3.11 ou superior.
 - **Ambiente:** ambiente virtual local (`venv`) para isolar as dependências.
-- **Servidor MCP:** biblioteca `fastmcp`, responsável por declarar o servidor e expor as ferramentas.
+- **Servidor MCP:** biblioteca `fastmcp`, responsável por declarar o servidor e expor as ferramentas; `pydantic` valida entradas estritas das tools.
 - **Persistência:** SQLite, usando a biblioteca padrão `sqlite3` do Python.
 - **Transporte:** `stdio`, para execução local e comunicação MCP por entrada e saída padrão.
 - **Dados de demonstração:** na primeira inicialização, criar o banco, o esquema e registros fictícios automaticamente. Não recriar nem sobrescrever dados quando o banco já possuir chamados.
@@ -12,7 +12,7 @@
 
 ## Dependências e ambiente
 
-A dependência externa da aplicação será `fastmcp`, registrada em `requirements.txt`. O acesso ao SQLite usa `sqlite3`, incluído no Python, portanto não requer uma dependência adicional.
+As dependências externas da aplicação serão `fastmcp` e `pydantic`, registradas em `requirements.txt`. O acesso ao SQLite usa `sqlite3`, incluído no Python, portanto não requer uma dependência adicional.
 
 Para preparar o ambiente a partir da raiz do projeto:
 

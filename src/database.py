@@ -20,6 +20,15 @@ class Chamado(TypedDict):
     atualizado_em: str
 
 
+class EventoStatus(TypedDict):
+    status: str
+    alterado_em: str
+
+
+class ChamadoComHistorico(Chamado):
+    historico_status: list[EventoStatus]
+
+
 @contextmanager
 def conectar_banco(caminho_banco: str | Path) -> Iterator[sqlite3.Connection]:
     caminho = Path(caminho_banco)
@@ -202,3 +211,64 @@ def listar_chamados(
         )
         for linha in linhas
     ]
+
+
+def buscar_historico_cliente(
+    caminho_banco: str | Path,
+    cliente_id: int,
+) -> list[ChamadoComHistorico]:
+    if isinstance(cliente_id, bool) or not isinstance(cliente_id, int):
+        raise ValueError("cliente_id deve ser um número inteiro.")
+
+    with conectar_banco(caminho_banco) as conexao:
+        cliente = conexao.execute(
+            "SELECT 1 FROM clientes WHERE id = ?", (cliente_id,)
+        ).fetchone()
+        if cliente is None:
+            raise LookupError(f"Cliente não encontrado: {cliente_id}.")
+
+        linhas = conexao.execute(
+            """
+            SELECT
+                c.id,
+                c.cliente_id,
+                c.descricao,
+                c.status,
+                c.criado_em,
+                c.atualizado_em,
+                h.id AS evento_id,
+                h.status AS evento_status,
+                h.alterado_em AS evento_alterado_em
+            FROM chamados AS c
+            LEFT JOIN historico_status_chamado AS h
+                ON h.chamado_id = c.id
+            WHERE c.cliente_id = ?
+            ORDER BY c.criado_em DESC, c.id ASC, h.alterado_em ASC, h.id ASC
+            """,
+            (cliente_id,),
+        ).fetchall()
+
+    chamados: list[ChamadoComHistorico] = []
+    chamado_atual: ChamadoComHistorico | None = None
+    for linha in linhas:
+        if chamado_atual is None or chamado_atual["id"] != linha["id"]:
+            chamado_atual = ChamadoComHistorico(
+                id=linha["id"],
+                cliente_id=linha["cliente_id"],
+                descricao=linha["descricao"],
+                status=linha["status"],
+                criado_em=linha["criado_em"],
+                atualizado_em=linha["atualizado_em"],
+                historico_status=[],
+            )
+            chamados.append(chamado_atual)
+
+        if linha["evento_id"] is not None:
+            chamado_atual["historico_status"].append(
+                EventoStatus(
+                    status=linha["evento_status"],
+                    alterado_em=linha["evento_alterado_em"],
+                )
+            )
+
+    return chamados
