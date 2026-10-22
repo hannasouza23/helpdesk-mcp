@@ -2,6 +2,8 @@
 
 Este projeto propõe um **servidor MCP de Helpdesk** para disponibilizar operações sobre chamados a agentes de IA e outras aplicações clientes compatíveis com o Model Context Protocol (MCP).
 
+Repositório remoto: [github.com/hannasouza23/helpdesk-mcp](https://github.com/hannasouza23/helpdesk-mcp).
+
 Os chamados são registrados pela equipe de suporte técnico em um banco de dados. O servidor disponibiliza ferramentas para:
 
 - Listar chamados, inclusive com filtro por status.
