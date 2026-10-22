@@ -53,3 +53,17 @@ absolutos válidos na máquina que executará o servidor.
 Execute os testes com `python -m unittest discover -s tests`. O código da
 aplicação fica em `src/`; o teste de integração também valida o ponto de entrada
 configurado em `.vscode/mcp.json` via transporte `stdio`.
+
+## Executar a interface de atendimento
+
+Com as dependências instaladas no ambiente virtual, inicie a interface
+Streamlit a partir da raiz do projeto:
+
+```bash
+streamlit run app/app.py
+```
+
+A interface demonstra uma conversa e mantém o histórico em `st.session_state`
+durante a sessão. Ela ainda não está conectada ao servidor MCP nem processa
+solicitações; use somente mensagens fictícias e não informe dados reais de
+clientes.
