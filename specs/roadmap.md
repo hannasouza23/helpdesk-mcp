@@ -27,6 +27,8 @@ Tool MCP: `listar_chamados`, com filtro opcional por status.
 
 Tool MCP: `buscar_historico_cliente`, consultando os chamados de um cliente.
 
+**Status:** concluída em 22/10/2026 às 13:38 (UTC−03:00).
+
 ### Fase 1 — Definir o contrato
 
 - **Objetivo:** definir como identificar o cliente por `cliente_id` numérico e quais informações dos chamados compõem seu histórico.
