@@ -32,6 +32,17 @@ chamados fictícios. Para usar outro arquivo de banco, defina `HELPDESK_DB_PATH`
 O transporte do servidor é `stdio`; a tool `listar_chamados` aceita o parâmetro
 opcional `status` (`aberto`, `em_andamento`, `resolvido` ou `fechado`).
 
+## Configurar o servidor MCP no VS Code
+
+O arquivo `.vscode/mcp.json` contém caminhos absolutos para o interpretador
+Python e para `src/server.py`. Esses caminhos são específicos da máquina em que
+o arquivo foi configurado. Para reproduzir a execução em outra máquina, ajuste
+`command` para o interpretador do ambiente virtual criado localmente e o caminho
+em `args` para o arquivo `src/server.py` na cópia local do projeto. No Linux ou
+macOS, o interpretador costuma estar em `.venv/bin/python`; no Windows, em
+`.venv/Scripts/python.exe`. Ambos os valores devem apontar para caminhos
+absolutos válidos na máquina que executará o servidor.
+
 Execute os testes com `python -m unittest discover -s tests`. O código da
 aplicação fica em `src/`; o teste de integração também valida o ponto de entrada
 configurado em `.vscode/mcp.json` via transporte `stdio`.
