@@ -15,3 +15,21 @@ Consulte a [missão do projeto](specs/missao.md) para conhecer o propósito, os 
 A [especificação da pilha de tecnologia](specs/pilha-tecnologia.md) registra as decisões de implementação, o esquema SQLite, a inicialização com dados fictícios e a execução local via `stdio`. As dependências Python estão listadas em `requirements.txt`.
 
 O [roadmap de funcionalidades](specs/roadmap.md) organiza as três tools previstas em fases de definição, implementação e validação. Os nomes de variáveis, tabelas, atributos e funções do código serão em português.
+
+## Executar o servidor
+
+Com Python 3.11 ou superior, prepare o ambiente e inicie o servidor MCP:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
+python -m helpdesk_mcp.server
+```
+
+Na primeira execução, o servidor cria `data/helpdesk.sqlite3`, o esquema SQLite e
+chamados fictícios. Para usar outro arquivo de banco, defina `HELPDESK_DB_PATH`.
+O transporte do servidor é `stdio`; a tool `listar_chamados` aceita o parâmetro
+opcional `status` (`aberto`, `em_andamento`, `resolvido` ou `fechado`).
+
+Execute os testes com `python -m unittest discover -s tests`.
