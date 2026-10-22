@@ -152,7 +152,8 @@ class TestarListagemChamados(unittest.TestCase):
         nomes_ferramentas, resultado = asyncio.run(chamar_tool())
 
         self.assertEqual(
-            nomes_ferramentas, ["listar_chamados", "buscar_historico_cliente"]
+            nomes_ferramentas,
+            ["listar_chamados", "buscar_historico_cliente", "atualizar_status"],
         )
         self.assertFalse(resultado.is_error)
         conteudo_estruturado = resultado.structured_content

@@ -1,5 +1,6 @@
 from collections.abc import Iterator
 from contextlib import contextmanager
+from datetime import datetime, timezone
 from pathlib import Path
 import sqlite3
 from typing import TypedDict
@@ -27,6 +28,13 @@ class EventoStatus(TypedDict):
 
 class ChamadoComHistorico(Chamado):
     historico_status: list[EventoStatus]
+
+
+class ResultadoAtualizacaoStatus(TypedDict):
+    chamado_id: int
+    status_anterior: str
+    status_atual: str
+    alterado: bool
 
 
 @contextmanager
@@ -272,3 +280,62 @@ def buscar_historico_cliente(
             )
 
     return chamados
+
+
+def atualizar_status_chamado(
+    caminho_banco: str | Path,
+    chamado_id: int,
+    novo_status: str,
+) -> ResultadoAtualizacaoStatus:
+    if isinstance(chamado_id, bool) or not isinstance(chamado_id, int):
+        raise ValueError("chamado_id deve ser um número inteiro.")
+
+    with conectar_banco(caminho_banco) as conexao:
+        conexao.execute("BEGIN IMMEDIATE")
+        chamado = conexao.execute(
+            "SELECT status FROM chamados WHERE id = ?", (chamado_id,)
+        ).fetchone()
+        if chamado is None:
+            raise LookupError(f"Chamado não encontrado: {chamado_id}.")
+
+        if not isinstance(novo_status, str) or novo_status not in STATUS_VALIDOS:
+            opcoes = ", ".join(STATUS_VALIDOS)
+            raise ValueError(
+                f"Status inválido: {novo_status!r}. Valores aceitos: {opcoes}."
+            )
+
+        status_anterior = chamado["status"]
+        alterado = novo_status != status_anterior
+        if alterado:
+            alterado_em = datetime.now(timezone.utc).isoformat()
+            conexao.execute(
+                """
+                UPDATE chamados
+                SET status = ?, atualizado_em = ?
+                WHERE id = ?
+                """,
+                (novo_status, alterado_em, chamado_id),
+            )
+            conexao.execute(
+                """
+                INSERT INTO historico_status_chamado (
+                    chamado_id, status, alterado_em
+                ) VALUES (?, ?, ?)
+                """,
+                (chamado_id, novo_status, alterado_em),
+            )
+
+        persistido = conexao.execute(
+            "SELECT status FROM chamados WHERE id = ?", (chamado_id,)
+        ).fetchone()
+        if persistido is None:
+            raise LookupError(f"Chamado não encontrado: {chamado_id}.")
+
+        resultado = ResultadoAtualizacaoStatus(
+            chamado_id=chamado_id,
+            status_anterior=status_anterior,
+            status_atual=persistido["status"],
+            alterado=alterado,
+        )
+
+    return resultado

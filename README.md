@@ -2,12 +2,11 @@
 
 Este projeto propõe um **servidor MCP de Helpdesk** para disponibilizar operações sobre chamados a agentes de IA e outras aplicações clientes compatíveis com o Model Context Protocol (MCP).
 
-Os chamados são registrados pela equipe de suporte técnico em um banco de dados. Atualmente, o servidor disponibiliza ferramentas para:
+Os chamados são registrados pela equipe de suporte técnico em um banco de dados. O servidor disponibiliza ferramentas para:
 
 - Listar chamados, inclusive com filtro por status.
 - Consultar o histórico de chamados de um cliente.
-
-A atualização do status de um chamado está prevista para uma fase posterior.
+- Atualizar o status de um chamado, registrando cada transição sem substituir o histórico.
 
 Nesta etapa, o servidor expõe apenas operações sobre dados, não uma interface para atendentes. O exemplo utilizará dados fictícios, será executado localmente e não terá autenticação real; não deve ser usado com dados reais nem considerado pronto para produção.
 
@@ -33,7 +32,10 @@ chamados fictícios. Para usar outro arquivo de banco, defina `HELPDESK_DB_PATH`
 O transporte do servidor é `stdio`. A tool `listar_chamados` aceita o parâmetro
 opcional `status` (`aberto`, `em_andamento`, `resolvido` ou `fechado`), e
 `buscar_historico_cliente` recebe o `cliente_id` numérico para retornar os
-chamados do cliente e seus eventos de status persistidos.
+chamados do cliente e seus eventos de status persistidos. `atualizar_status`
+recebe `chamado_id` e `novo_status`; a alteração e seu evento histórico são
+gravados na mesma transação. Os status aceitos são `aberto`, `em_andamento`,
+`resolvido` e `fechado`.
 
 ## Configurar o servidor MCP no VS Code
 

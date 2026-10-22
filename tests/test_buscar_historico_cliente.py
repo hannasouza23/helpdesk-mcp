@@ -220,7 +220,8 @@ class TestarHistoricoCliente(unittest.TestCase):
         ) = asyncio.run(chamar_tools())
 
         self.assertEqual(
-            nomes_ferramentas, ["listar_chamados", "buscar_historico_cliente"]
+            nomes_ferramentas,
+            ["listar_chamados", "buscar_historico_cliente", "atualizar_status"],
         )
         self.assertFalse(com_chamados.is_error)
         self.assertIsNotNone(com_chamados.structured_content)
