@@ -1,16 +1,21 @@
+import asyncio
+
 import streamlit as st
+from fastmcp.exceptions import ToolError
+
+from mcp_client import executar_tool, interpretar_comando
 
 
 st.set_page_config(page_title="Helpdesk", page_icon="💬")
 st.title("Helpdesk — atendimento")
 st.markdown(
-    "Use o campo abaixo para escrever uma mensagem e acompanhar a conversa. "
-    "Este protótipo mantém o histórico apenas durante a sessão atual e ainda "
-    "não está conectado ao servidor MCP."
+    "Consulte e atualize chamados com comandos simples. O histórico da "
+    "conversa fica disponível durante a sessão atual."
 )
 st.info(
-    "Não inclua dados reais de clientes. As mensagens não são encaminhadas "
-    "nem processadas pelas ferramentas de chamados."
+    "Exemplos: `listar abertos`, `histórico do cliente 2` e "
+    "`alterar chamado 3 para fechado`. Status aceitos: aberto, em andamento, "
+    "resolvido e fechado. Esta demonstração usa dados fictícios."
 )
 
 if "mensagens" not in st.session_state:
@@ -18,8 +23,8 @@ if "mensagens" not in st.session_state:
         {
             "role": "assistant",
             "content": (
-                "Olá! Como posso ajudar? Descreva sua solicitação para "
-                "visualizá-la nesta conversa."
+                "Olá! Posso listar chamados, consultar o histórico de um "
+                "cliente ou atualizar o status de um chamado."
             ),
         }
     ]
@@ -32,11 +37,16 @@ if texto_usuario := st.chat_input("Digite sua mensagem"):
     st.session_state.mensagens.append(
         {"role": "user", "content": texto_usuario}
     )
-    resposta = (
-        "Sua mensagem foi adicionada à conversa desta sessão. "
-        "A integração com o assistente e com as ferramentas de chamados "
-        "ainda não está disponível."
-    )
+    try:
+        nome_tool, argumentos = interpretar_comando(texto_usuario)
+    except ValueError as erro:
+        resposta = str(erro)
+    else:
+        try:
+            with st.spinner("Consultando o servidor de helpdesk..."):
+                resposta = asyncio.run(executar_tool(nome_tool, argumentos))
+        except (OSError, TimeoutError, ToolError) as erro:
+            resposta = f"Não foi possível concluir a operação: {erro}"
     st.session_state.mensagens.append(
         {"role": "assistant", "content": resposta}
     )

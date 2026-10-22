@@ -63,7 +63,13 @@ Streamlit a partir da raiz do projeto:
 streamlit run app/app.py
 ```
 
-A interface demonstra uma conversa e mantém o histórico em `st.session_state`
-durante a sessão. Ela ainda não está conectada ao servidor MCP nem processa
-solicitações; use somente mensagens fictícias e não informe dados reais de
-clientes.
+A interface mantém o histórico em `st.session_state` durante a sessão e se
+conecta ao servidor MCP local via `stdio`. Exemplos de comandos:
+
+- `listar abertos` (também aceita `listar` para todos os chamados);
+- `histórico do cliente 2`;
+- `alterar chamado 3 para fechado`.
+
+Os status aceitos são `aberto`, `em andamento`, `resolvido` e `fechado`.
+Comandos desconhecidos exibem a orientação de uso. A demonstração usa dados
+fictícios; não informe dados reais de clientes.
