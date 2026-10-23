@@ -1,2 +1,4 @@
 fastmcp>=2,<3
+openai>=1.40,<3
 pydantic>=2,<3
+streamlit>=1.40,<2

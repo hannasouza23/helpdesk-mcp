@@ -53,3 +53,34 @@ absolutos válidos na máquina que executará o servidor.
 Execute os testes com `python -m unittest discover -s tests`. O código da
 aplicação fica em `src/`; o teste de integração também valida o ponto de entrada
 configurado em `.vscode/mcp.json` via transporte `stdio`.
+
+## Executar a interface de atendimento
+
+Com as dependências instaladas no ambiente virtual, inicie a interface
+Streamlit a partir da raiz do projeto:
+
+```bash
+streamlit run app/app.py
+```
+
+A interface aceita perguntas em linguagem natural. Um modelo compatível com a
+API OpenAI (com suporte a Chat Completions e tool calling) seleciona entre as
+tools MCP de listagem, histórico e atualização. As mensagens da conversa são
+enviadas ao provedor configurado para interpretação; use apenas dados
+fictícios.
+Configure `OPENAI_API_KEY`, `OPENAI_BASE_URL` e `OPENAI_MODEL` no ambiente antes
+de iniciar o Streamlit. Exemplo:
+
+```bash
+export OPENAI_API_KEY="sua-chave"
+export OPENAI_BASE_URL="https://seu-provedor.example/v1"
+export OPENAI_MODEL="nome-do-modelo"
+streamlit run app/app.py
+```
+
+Perguntas como “Quais chamados estão abertos?” e “O que aconteceu com os
+chamados do cliente 2?” consultam as tools automaticamente. Antes de alterar
+um chamado, a interface apresenta a alteração proposta e exige que o atendente
+clique em **Confirmar alteração**; cancelar não executa a tool nem altera o
+banco. O histórico da conversa fica em `st.session_state` durante a sessão.
+Use somente dados fictícios.
